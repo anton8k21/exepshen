@@ -10,6 +10,6 @@ fun main(args: Array<String>) {
     service.addChat(54,chat1)
     service.addChat(15,chat2)
 
-    println(service.addMessage(4))
+
 
 }

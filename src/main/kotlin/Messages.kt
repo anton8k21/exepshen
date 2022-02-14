@@ -1,8 +1,7 @@
 data class Messages(
-    val text: String,
+    var text: String,
     val date: Int,
-    val idRecipient: Int,
-    val idSender: Int
+    val statusMessages: Boolean
 ) {
 
 }

@@ -1,45 +1,78 @@
+import java.util.*
+
 class Service {
     var chats = mutableListOf<Chat>()
 
-    fun addChat(idInterlocutor: Int, chat: Chat){
+    fun addChat(idInterlocutor: Int, chat: Chat) {
         chat.idInterlocutor = idInterlocutor
         chats += chat
     }
-    fun deleteChat(idInterlocutor: Int): MutableList<Chat>{
-        for (index in chats.indices){
-            if (chats[index].idInterlocutor == idInterlocutor){
-                chats.removeAt(index)
-                return chats
-            }
+
+    fun deleteChat(idInterlocutor: Int): MutableList<Chat> {
+        val result = chats.removeIf { it.idInterlocutor == idInterlocutor }
+        if (!result) {
+            throw ServiceNotFoundException("Чат с данным пользователем не найден")
         }
-        throw ServiceNotFoundException("Час с данным пользователем не найден")
+        return chats
+    }
+    fun getMessages(idInterlocutor: Int): MutableList<Messages>{
+        val result = chats.find { it.idInterlocutor == idInterlocutor }
+        if (result != null) {
+
+            return result.messages
+        }else
+            throw ServiceNotFoundException("Час с данным пользователем пустой")
     }
 
-    fun getChat(): MutableList<Chat>{
+    fun getChat(): MutableList<Chat> {
         return chats
     }
 
-    fun addMessage(idInterlocutor: Int, messages: Messages){
-        for (index in chats.indices){
-            if (chats[index].idInterlocutor == idInterlocutor){
-                chats[index].messages += messages
-            }
-        }
+    fun addMessage(idInterlocutor: Int, messages: Messages, chat: Chat) {
+        val result = chats.find { it.idInterlocutor == idInterlocutor }
+        if (result != null) {
+            result.messages += messages
+        } else
+            chat.messages += messages
+            addChat(idInterlocutor,chat)
     }
 
-    fun deleteMessage(date: Int,idRecipient: Int,idSender: Int, idInterlocutor: Int){
-        for (index in chats.indices){
-            if (chats[index].idInterlocutor == idInterlocutor){
-                for (i in chats[index].messages.indices){
-                    if (
-                        chats[index].messages[i].date == date &&
-                        chats[index].messages[i].idRecipient == idRecipient &&
-                        chats[index].messages[i].idSender == idSender
-                    ){
-                        chats[index].messages.removeAt(i)
+    fun deleteMessage(idInterlocutor: Int, date: Int): MutableList<Messages> {
+        val result = chats.find { it.idInterlocutor == idInterlocutor }
+        if (result != null) {
+            if (result.messages.size != 1) {
+                val resultDelete = result.messages.removeIf() { it.date == date }
+                if (!resultDelete) {
+                    throw ServiceNotFoundException("Сообщение которое вы хотите удалить не найдено")
+                }
+                return result.messages
+            } else {
+                if (result.messages.size != 1) {
+                    val resultDelete = result.messages.removeIf() { it.date == date }
+                    if (!resultDelete) {
+                        throw ServiceNotFoundException("Сообщение которое вы хотите удалить не найдено")
+                    } else {
+                        deleteChat(idInterlocutor)
+                        return result.messages
                     }
                 }
             }
-        }
+            return result.messages
+        } else
+            throw ServiceNotFoundException("Чат не найден")
+    }
+
+    fun editMessage(idInterlocutor: Int, date: Int, text: String) {
+        val result = chats.find { it.idInterlocutor == idInterlocutor }
+        if (result != null) {
+            val result2 = result.messages.find { it.date == date }
+            if (result2 != null) {
+                result2.text = text
+            } else
+                throw ServiceNotFoundException("Сообщение которое вы хотите изменить не найдено")
+        } else
+            throw ServiceNotFoundException("Чат не найден")
     }
 }
+
+
