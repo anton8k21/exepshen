@@ -18,7 +18,7 @@ class Service {
     fun getMessages(idInterlocutor: Int): MutableList<Messages>{
         val result = chats.find { it.idInterlocutor == idInterlocutor }
         if (result != null) {
-
+            result.messages.forEach { it.statusMessages = false }
             return result.messages
         }else
             throw ServiceNotFoundException("Час с данным пользователем пустой")
@@ -47,7 +47,7 @@ class Service {
                 }
                 return result.messages
             } else {
-                if (result.messages.size != 1) {
+                if (result.messages.size == 1) {
                     val resultDelete = result.messages.removeIf() { it.date == date }
                     if (!resultDelete) {
                         throw ServiceNotFoundException("Сообщение которое вы хотите удалить не найдено")
