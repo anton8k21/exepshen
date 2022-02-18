@@ -4,19 +4,16 @@ import org.junit.Assert.*
 
 class ServiceTest {
 
-    val chat1 = Chat()
-    val chat2 = Chat()
-    val chat3 = Chat()
-    val chat4 = Chat()
-    val chat5 = Chat()
-    val chat6 = Chat()
+    private val chat1 = Chat(mutableListOf())
+    private val chat2 = Chat(mutableListOf())
+    private val chat3 = Chat(mutableListOf())
+    private val chat4 = Chat(mutableListOf())
 
-    val messages1 = Messages(text = "Привет", date = 12, statusMessages = false)
-    val messages2 = Messages(text = "Как дела?", date = 32, statusMessages = false)
-    val messages3 = Messages(text = "Привет, выйдешь сегодня", date = 45, statusMessages = false)
-    val messages4 = Messages(text = "Хорошо", date = 23, statusMessages = true)
-    val messages5 = Messages(text = "))))", date = 87, statusMessages = false)
-    val messages6 = Messages(text = "Посовету хороший фильм", date = 28, statusMessages = true)
+    private val messages1 = Messages(text = "Привет", date = 12, statusMessages = false)
+    private val messages2 = Messages(text = "Как дела?", date = 32, statusMessages = false)
+    private val messages3 = Messages(text = "Привет, выйдешь сегодня", date = 45, statusMessages = false)
+    private val messages4 = Messages(text = "Хорошо", date = 23, statusMessages = true)
+
 
     @Test
     fun addChat() {

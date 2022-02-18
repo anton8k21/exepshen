@@ -1,4 +1,3 @@
-import java.util.*
 
 class Service {
     var chats = mutableListOf<Chat>()
@@ -15,7 +14,7 @@ class Service {
         }
         return chats
     }
-    fun getMessages(idInterlocutor: Int): MutableList<Messages>{
+    fun getMessages(idInterlocutor: Int): MutableList<Messages> {
         val result = chats.find { it.idInterlocutor == idInterlocutor }
         if (result != null) {
             result.messages.forEach { it.statusMessages = false }
@@ -37,11 +36,11 @@ class Service {
             addChat(idInterlocutor,chat)
     }
 
-    fun deleteMessage(idInterlocutor: Int, date: Int): MutableList<Messages> {
+    fun deleteMessage(idInterlocutor: Int, date: Int): List<Messages> {
         val result = chats.find { it.idInterlocutor == idInterlocutor }
         if (result != null) {
             if (result.messages.size != 1) {
-                val resultDelete = result.messages.removeIf() { it.date == date }
+                val resultDelete = result.messages.removeIf { it.date == date }
                 if (!resultDelete) {
                     throw ServiceNotFoundException("Сообщение которое вы хотите удалить не найдено")
                 }
